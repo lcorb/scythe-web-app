@@ -181,12 +181,12 @@ class SelectBoard extends LitElement {
         .icon {
             height: 100px;
             width: 100px;
-            transition: .5s all;
+            transition: .3s all ease-in;
         }
         
         .selected {
             will-change: transform;
-            transition: .5s all;
+            transition: .3s all ease-out;
             transform: translateY(-10px);
         }
         .disabled{
