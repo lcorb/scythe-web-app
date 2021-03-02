@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "experimentalDecorators": true,
+      "target": "es6",
+      "module": "ESNext",
+      "lib": ["es2019", "dom", "es2015", "es2015.collection"],
+      "importHelpers": true,
+      "strict": true,
+      "moduleResolution": "node"
+    }
+}
