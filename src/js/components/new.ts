@@ -187,6 +187,9 @@ class SelectBoard extends LitElement {
             height:100%;
             width:100%;
         }
+        .gray {
+            filter: grayscale(90%);
+        }
         .board {
             border: 2px solid gray;
         }
@@ -262,7 +265,7 @@ class SelectBoard extends LitElement {
             <h1>Pick the board for <strong>${this.factionsToCycle[this.currentFaction]}</strong></h1>
             ${this.factionsToCycle.map((faction: string) => {
             return html`
-                <img draggable='false' class='faction-icon' src='${icons[`${faction}_icon`]}' @click=${() => { this.gotoFaction(faction) }}></img>
+                <img draggable='false' class=${this.currentFaction === this.factionsToCycle.indexOf(faction) ? 'faction-icon' : 'faction-icon gray' } src='${icons[`${faction}_icon`]}' @click=${() => { this.gotoFaction(faction) }}></img>
             `
             })}
             <div>
