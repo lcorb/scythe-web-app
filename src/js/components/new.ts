@@ -238,6 +238,9 @@ class SelectBoard extends LitElement {
         if (this.pairs[faction]) {
             this.currentlySelectedBoard = this.pairs[faction];
         }
+
+        this.currentFaction = this.factionsToCycle.indexOf(faction);
+
         this.requestUpdate();
     }
     
@@ -259,7 +262,7 @@ class SelectBoard extends LitElement {
             <h1>Pick the board for <strong>${this.factionsToCycle[this.currentFaction]}</strong></h1>
             ${this.factionsToCycle.map((faction: string) => {
             return html`
-                <img draggable='false' class='faction-icon' src='${icons[`${faction}_icon`]}'></img>
+                <img draggable='false' class='faction-icon' src='${icons[`${faction}_icon`]}' @click=${() => { this.gotoFaction(faction) }}></img>
             `
             })}
             <div>
