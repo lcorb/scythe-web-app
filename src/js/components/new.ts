@@ -163,7 +163,7 @@ customElements.define('select-faction', SelectFaction);
 
 class SelectBoard extends LitElement {
     @property()
-    boards: string[];
+    boards: { [board: string]: string };
     pairs: { [faction: string]: string };
     factionsToCycle: string[] = [];
     currentFaction: number;
@@ -182,6 +182,11 @@ class SelectBoard extends LitElement {
             height: 100px;
             width: 100px;
             transition: .3s all ease-in;
+        }
+
+        .icon-small {
+            height: 20px;
+            width: 20px;
         }
         
         .selected {
@@ -208,15 +213,15 @@ class SelectBoard extends LitElement {
 
     constructor(next: () => void, getFactions: () => any, updateParent: any) {
         super();
-        this.boards = [
-            'Agricultural',
-            'Engineering',
-            'Industrial',
-            'Innovative',
-            'Mechanical',
-            'Militant',
-            'Patriotic',
-        ];
+        this.boards = {
+            'Agricultural': '',
+            'Engineering': '',
+            'Industrial': '',
+            'Innovative': '',
+            'Mechanical': '',
+            'Militant': '',
+            'Patriotic': '',
+        },
         this.next = next;
         this.getFactions = getFactions;
         this.currentFaction = 0;
@@ -233,12 +238,20 @@ class SelectBoard extends LitElement {
     }
 
     selectBoard(board: string) {
-        if (this.currentlySelectedBoard === board) { 
+        const faction = this.factionsToCycle[this.currentFaction];
+        if (this.currentlySelectedBoard === board) {
+            this.boards[board] = '';
             this.currentlySelectedBoard = '';
         } else {
+            this.boards[board] = faction;
+
+            if (this.pairs[faction]) {
+                this.boards[this.pairs[faction]] = '';
+            }
+
             this.currentlySelectedBoard = board;
         }
-        this.pairs[this.factionsToCycle[this.currentFaction]] = board;
+        this.pairs[faction] = this.currentlySelectedBoard;
         this.requestUpdate();
     }
 
@@ -267,6 +280,16 @@ class SelectBoard extends LitElement {
         this.requestUpdate();
     }
 
+    findFactionWithBoard(board: string) {
+            Object.keys(this.pairs).forEach((faction, i) => {
+                if (this.pairs[faction] === board) {
+                    return faction;
+                } else if (i === Object.keys(this.pairs).length - 1) {
+                    return false;
+                }
+            })
+    }
+
     render() {
         return html`
             <h1>Pick the board for <strong>${this.factionsToCycle[this.currentFaction]}</strong></h1>
@@ -276,9 +299,11 @@ class SelectBoard extends LitElement {
             `
             })}
             <div>
-                ${this.boards.map((board: string )=> { 
+                ${Object.keys(this.boards).map((board: string )=> {
                     return html`
-                        <div class=${this.currentlySelectedBoard === board ? 'selected-board' : 'board' } @click=${() => { this.selectBoard(board) }}>${board}</div>
+                        <div class=${this.currentlySelectedBoard === board ? 'selected-board' : 'board' } @click=${() => { this.selectBoard(board) }}>
+                        ${board} ${this.boards[board] ? html`<img draggable='false' class='icon-small' src='${icons[`${this.boards[board]}_icon`]}'></img>` : ''}
+                        </div>
                     ` 
                 })}
             </div>
