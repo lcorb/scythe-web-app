@@ -174,26 +174,32 @@ class SelectBoard extends LitElement {
 
     static get styles() {
         return css`
-        .faction-icon {
-            height: 100px;
-            width: 100px;
-        }
-
         h1 strong{
             text-transform: capitalize;
         }
-        
-        .faction-icon img {
-            height:100%;
-            width:100%;
+
+        .icon {
+            height: 100px;
+            width: 100px;
+            transition: .5s all;
         }
-        .gray {
+        
+        .selected {
+            will-change: transform;
+            transition: .5s all;
+            transform: translateY(-10px);
+        }
+        .disabled{
+            will-change: transform;
+            transition: .5s all;
             filter: grayscale(90%);
         }
         .board {
+            transition: border .3s ease-in;
             border: 2px solid gray;
         }
-        .selected {
+        .selected-board {
+            transition: border .1s ease-out;
             border: 2px solid goldenrod;
         }
         ${btnCSS()}
@@ -265,13 +271,13 @@ class SelectBoard extends LitElement {
             <h1>Pick the board for <strong>${this.factionsToCycle[this.currentFaction]}</strong></h1>
             ${this.factionsToCycle.map((faction: string) => {
             return html`
-                <img draggable='false' class=${this.currentFaction === this.factionsToCycle.indexOf(faction) ? 'faction-icon' : 'faction-icon gray' } src='${icons[`${faction}_icon`]}' @click=${() => { this.gotoFaction(faction) }}></img>
+                <img draggable='false' class=${this.currentFaction === this.factionsToCycle.indexOf(faction) ? 'icon selected' : 'icon disabled' } src='${icons[`${faction}_icon`]}' @click=${() => { this.gotoFaction(faction) }}></img>
             `
             })}
             <div>
                 ${this.boards.map((board: string )=> { 
                     return html`
-                        <div class=${this.currentlySelectedBoard === board ? 'selected' : 'board' } @click=${() => { this.selectBoard(board) }}>${board}</div>
+                        <div class=${this.currentlySelectedBoard === board ? 'selected-board' : 'board' } @click=${() => { this.selectBoard(board) }}>${board}</div>
                     ` 
                 })}
             </div>
