@@ -229,7 +229,6 @@ class SelectBoard extends LitElement {
 
     updateFactions() {
         this.factionsToCycle = Object.keys(this.getFactions());
-        console.log(this.factionsToCycle);
         this.factionsToCycle.forEach(faction => { this.pairs[faction] = '' })
     }
 
@@ -239,13 +238,15 @@ class SelectBoard extends LitElement {
         } else {
             this.currentlySelectedBoard = board;
         }
-        this.pairs[board] === this.factionsToCycle[this.currentFaction];
+        this.pairs[this.factionsToCycle[this.currentFaction]] = board;
         this.requestUpdate();
     }
 
     gotoFaction(faction: string) {
         if (this.pairs[faction]) {
             this.currentlySelectedBoard = this.pairs[faction];
+        } else {
+            this.currentlySelectedBoard = '';
         }
 
         this.currentFaction = this.factionsToCycle.indexOf(faction);
@@ -380,7 +381,6 @@ export default class NewGame extends LitElement {
     }
 
     getSelectedFactions = () => {
-        console.log(this.selectedFactions);
         return this.selectedFactions;
     }
 
