@@ -319,18 +319,39 @@ class SelectBoard extends LitElement {
 
         this.requestUpdate();
     }
+
+    checkUnassignedFactions() {
+        return new Promise(resolve => {
+            let unassigned: string[] = [];
+            Object.keys(this.pairs).forEach((faction: string) => {
+                if (!this.pairs[faction]) {
+                    unassigned.push(faction);
+                }
+            })
+
+            resolve(unassigned);
+        })
+    }
     
-    nextFaction() {
-        if (this.currentFaction === this.factionsToCycle.length - 1) { 
+    async nextFaction() {
+        let unassignedFactions: string[] | any = await this.checkUnassignedFactions();
+
+        if (!unassignedFactions.length) {
             this.updateParent(this.pairs);
             return this.next();
+
+        } else if (this.currentFaction === this.factionsToCycle.length - 1) {
+            this.gotoFaction(unassignedFactions[0]);
+
+        } else if (!unassignedFactions.includes(this.factionsToCycle[this.currentFaction + 1])) {
+            this.gotoFaction(unassignedFactions[0]);
+        }
+        else {
+            this.currentFaction +=1;
+            this.currentlySelectedBoard = this.pairs[this.currentFaction] ? this.pairs[this.currentFaction] : '';
+            this.requestUpdate();
         }
         
-        this.currentFaction +=1;
-
-        this.currentlySelectedBoard = this.pairs[this.currentFaction] ? this.pairs[this.currentFaction] : '';
-
-        this.requestUpdate();
     }
 
     findFactionWithBoard(board: string) {
