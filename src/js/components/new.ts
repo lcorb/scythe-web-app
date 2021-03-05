@@ -143,7 +143,7 @@ class SelectFaction extends LitElement {
         @keyframes shake {
             0% { transform: translate(10px, 0px); }
             25% { transform: translate(-10px, 0px); }
-            50% { transform: translate(15px, 0px); }
+            50% { transform: translate(10px, 0px); }
             75% { transform: translate(-5px, 0px); }
             100% { transform: translate(0px, 0px); }
         }
@@ -163,7 +163,6 @@ class SelectFaction extends LitElement {
 
     selectFaction = (faction: string) => {
         if (this.selectedFactions[faction]) {
-            this.recentlyUnselectedFaction = faction;
             delete this.selectedFactions[faction];
         } else {
             this.selectedFactions[faction] = true;
@@ -175,8 +174,6 @@ class SelectFaction extends LitElement {
             this.recentlyUnselectedFaction = keys[0];
             delete this.selectedFactions[keys[0]];
         }
-
-        console.log(this.recentlyUnselectedFaction);
 
         this.updateParent(this.selectedFactions);
         // need to create directive to handle updating
@@ -216,7 +213,7 @@ class SelectBoard extends LitElement {
 
     static get styles() {
         return css`
-        h1 strong{
+        h1 strong {
             text-transform: capitalize;
         }
 
