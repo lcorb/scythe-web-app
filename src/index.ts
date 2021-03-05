@@ -1,6 +1,6 @@
 import { render } from "lit-html";
-import Landing from "./js/components/landing";
-import NewGame from "./js/components/new";
+import Landing from "./ts/views/landing";
+import NewGame from "./ts/views/new";
 
 const routes: { [x: string]: any; } = {
     "/": Landing,
