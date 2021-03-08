@@ -1,25 +1,29 @@
 import { LitElement, html, css, property } from 'lit-element';
-// @ts-ignore: parcel can use this notiation to pack these images
+import { ScoreBoard } from './components/ScoreBoard';
 import { SelectBoard } from './components/SelectBoard';
 import { SelectFaction } from './components/SelectFaction';
+import { StepProgress } from './components/StepProgress';
+
+interface Score {
+    stars: number;
+    coins: number;
+}
+
+export interface Faction {
+    name: string;
+    board: string;
+    player?: string;
+    score?: Score;
+}
 
 export default class NewGame extends LitElement {
-    // private factions: string[];
-    // private selected: { [x: string]: boolean };
-
-    // static get properties() {
-    //     return {
-    //         factions: { attribute: false },
-    //         selected: { attribute: true }
-    //     }
-    // }
-
     @property()
     factions: string[];
-    selectedFactions: { [faction: string]: boolean }
+    selectedFactions: { [faction: string]: Faction }
     steps: any[];
     currentStep: number
     pairs: { [board: string]: string }
+    stepTitles: string[];
 
     static get styles() {
         return css`
@@ -73,6 +77,11 @@ export default class NewGame extends LitElement {
             this.displaySelectBoard,
             this.displayScoreBoard
         ]
+        this.stepTitles = [
+            'Select Faction',
+            'Select Board',
+            'Enter Score'
+        ]
     }
 
     displaySelectFaction = () => {
@@ -84,7 +93,11 @@ export default class NewGame extends LitElement {
     }
 
     displayScoreBoard = () => {
+        // return new ScoreBoard(this.goToNextStep, this.getPairs, this.updateScore)
+    }
 
+    displayStepProgress = () => {
+        return new StepProgress(this.stepTitles, this.currentStep, this.goToStep);
     }
 
     goToNextStep = () => {
@@ -92,28 +105,30 @@ export default class NewGame extends LitElement {
         this.requestUpdate();
     }
 
-    goToStep(step: number) {
+    goToStep = (step: number) => {
         this.currentStep = step;
+        this.requestUpdate();
     }
 
     getSelectedFactions = () => {
         return this.selectedFactions;
     }
 
-    updateSelectedFaction = (selectedFactions: { [faction: string]: boolean }) => {
+    updateSelectedFaction = (selectedFactions: { [faction: string]: Faction }) => {
         this.selectedFactions = selectedFactions;
     }
 
     updateBoardPairs = (pairs: { [board: string]: string }) => {
         this.pairs = pairs;
     }
-    
+
     displayCurrentStep = () => {
         return this.steps[this.currentStep]();
     }
 
     render() {
         return html`
+                ${this.displayStepProgress()}
                 ${this.displayCurrentStep()}
             `
     }

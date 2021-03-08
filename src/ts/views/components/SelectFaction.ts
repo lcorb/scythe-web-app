@@ -1,6 +1,7 @@
 import { LitElement, html, css, property } from 'lit-element';
 import icons from '../images/icons';
 import glowButton from '../css/glow';
+import { Faction } from '../new';
 
 export class SelectFaction extends LitElement {
     @property()
@@ -15,14 +16,14 @@ export class SelectFaction extends LitElement {
         'fenris',
         'vesna',
     ];
-    selectedFactions: { [faction: string]: boolean; } = {};
+    selectedFactions: { [faction: string]: Faction };
     updateParent: any;
     next: () => void;
     maximumFactions: number;
     firstRender: boolean;
     recentlyUnselectedFaction: string;
 
-    constructor(next: () => void, selectedFactions: { [faction: string]: boolean; }, updateParent: any) {
+    constructor(next: () => void, selectedFactions: { [faction: string]: Faction }, updateParent: any) {
         super();
         this.next = next;
         this.selectedFactions = selectedFactions;
@@ -92,7 +93,7 @@ export class SelectFaction extends LitElement {
         if (this.selectedFactions[faction]) {
             delete this.selectedFactions[faction];
         } else {
-            this.selectedFactions[faction] = true;
+            this.selectedFactions[faction] = <Faction>{name: faction, board: ''};
         }
 
         const keys = Object.keys(this.selectedFactions);

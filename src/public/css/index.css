@@ -49,7 +49,7 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
     height: 75%;
-    width: 50%;
+    width: 70%;
     backdrop-filter: blur(5px);
 }
 
