@@ -88,7 +88,6 @@ export class SelectBoard extends LitElement {
 
     selectBoard(board: string) {
         const faction = Object.keys(this.factions)[this.currentFaction];
-
         if (this.currentlySelectedBoard === board) {
             this.boards[board] = '';
             this.factions[faction].board = '';
@@ -101,7 +100,9 @@ export class SelectBoard extends LitElement {
                 let newBoard = this.factions[faction].board;
                 let otherFaction = this.boards[board];
 
-                this.boards[newBoard] = otherFaction;
+                if (this.boards[newBoard]) {
+                    this.boards[newBoard] = otherFaction;
+                }
                 this.factions[otherFaction].board = newBoard;
             } 
             else {

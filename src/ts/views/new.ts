@@ -22,7 +22,6 @@ export default class NewGame extends LitElement {
     selectedFactions: { [faction: string]: Faction }
     steps: any[];
     currentStep: number
-    pairs: { [board: string]: string }
     stepTitles: string[];
 
     static get styles() {
@@ -69,7 +68,6 @@ export default class NewGame extends LitElement {
             'fenris',
             'vesna',
         ];
-        this.pairs = {};
         this.selectedFactions = {};
         this.currentStep = 0;
         this.steps = [
@@ -89,7 +87,7 @@ export default class NewGame extends LitElement {
     }
 
     displaySelectBoard = () => {
-        return new SelectBoard(this.goToNextStep, this.getSelectedFactions, this.updateBoardPairs);
+        return new SelectBoard(this.goToNextStep, this.getSelectedFactions, this.updateSelectedFaction);
     }
 
     displayScoreBoard = () => {
@@ -116,10 +114,6 @@ export default class NewGame extends LitElement {
 
     updateSelectedFaction = (selectedFactions: { [faction: string]: Faction }) => {
         this.selectedFactions = selectedFactions;
-    }
-
-    updateBoardPairs = (pairs: { [board: string]: string }) => {
-        this.pairs = pairs;
     }
 
     displayCurrentStep = () => {
