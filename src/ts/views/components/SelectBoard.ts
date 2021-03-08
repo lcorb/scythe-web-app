@@ -72,10 +72,13 @@ export class SelectBoard extends LitElement {
         this.updateFactions();
     }
 
-    updateFactions() {
+    async updateFactions() {
         this.factions = this.getFactions();
         const keys = Object.keys(this.factions);
         this.currentlySelectedBoard = this.factions[keys[0]].board || '';
+        const unassignedFactions: string[] | any = await this.checkUnassignedFactions();
+        if (unassignedFactions.length) { this.gotoFaction(unassignedFactions[0]); }
+        console.log(unassignedFactions);
         keys.forEach(faction => {
             if (this.factions[faction].board) {
                 this.boards[this.factions[faction].board] = faction;
@@ -173,7 +176,7 @@ export class SelectBoard extends LitElement {
 
     render() {
         return html`
-            <h1>Pick the board for <strong>${this.factions[this.currentFaction]}</strong></h1>
+            <h1>Pick the board for <strong>${Object.keys(this.factions)[this.currentFaction]}</strong></h1>
             ${Object.keys(this.factions).map((faction: string) => {
             return html`
             <img draggable='false' class=${this.currentFaction === Object.keys(this.factions).indexOf(faction) ? 'icon selected' : 'icon disabled'
